@@ -1,0 +1,71 @@
+{
+    "version": "1.0.3.0",
+    "description": "A Windows Notification Tray Program for Intersystems IRIS",
+    "homepage": "https://github.com/isc-marjohns/IRISTray",
+    "license": "Proprietary",
+    "notes": "If installation fails, ensure you have Developer Mode enabled or manually trust the included certificate.",
+    "architecture": {
+        "64bit": {
+            "url": [
+                "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v1.0.2.0/Add-AppDevPackage.ps1",
+                "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v1.0.2.0/Add-AppDevPackage.resources.zip",
+                "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v1.0.2.0/Install.ps1",
+                "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v1.0.2.0/IrisNotificationArea_1.0.3.0_x64.cer",
+                "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v1.0.2.0/IrisNotificationArea_1.0.3.0_x64.msix"
+            ],
+            "hash": [
+                "sha256:BB01BFDC4442236A09566B1B9DD2ABC4D0E17004AA7B19DBC2A84B092C3933F2",
+                "sha256:912423BAA1B92EDAAD945A6CD879E49FD6940357C1BEAA485650186068A9869C",
+                "sha256:AD7296EBB7900EBA89C54200DF17C89FB25F26A52F9C6D4C91472AC4145D5EAA",
+                "sha256:777CB54F6EF6668C6F230A5D59EA94F62B0EBA7804EBEE08D22066AC4D1986BD",
+                "sha256:ED61EAB5BA72C0E790DAC871D7D1F1BC34958B3497193B3D226664F4FC2C9080"
+            ]
+        }
+    },
+    "installer": {
+        "script": [
+            "$certFile = Get-ChildItem \"$dir\\*.cer\" | Select-Object -First 1",
+            "if ($certFile) {",
+            "    Write-Host \"Found certificate: $($certFile.Name)\"",
+            "    Write-Host 'Trusting certificate...'",
+            "    Import-Certificate -FilePath $certFile.FullName -CertStoreLocation 'Cert:\\LocalMachine\\TrustedPeople'",
+            "} else {",
+            "    Write-Error 'Could not find .cer file in installation directory!'",
+            "}",
+            "Write-Host 'Installing MSIX...'",
+            "& \"$dir\\Install.ps1\""
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "$pkg = Get-AppxPackage | Where-Object { $_.PackageFamilyName -like '*com.intersystems.iristray*' }",
+            "if ($pkg) {",
+            "    Write-Host \"Removing MSIX package: $($pkg.PackageFullName)\"",
+            "    Remove-AppxPackage -Package $pkg.PackageFullName",
+            "} else {",
+            "    Write-Host 'No matching package found to uninstall.'",
+            "}"
+        ]
+    },
+    "checkver": {
+        "url": "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/version.txt",
+        "re": "([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": [
+                    "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v$version/Add-AppDevPackage.ps1",
+                    "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v$version/Add-AppDevPackage.resources.zip",
+                    "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v$version/Install.ps1",
+                    "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v$version/IrisNotificationArea_$version_x64.cer",
+                    "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v$version/IrisNotificationArea_$version_x64.msix"
+                ],
+                "hash": {
+                    "url": "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v$version/sha256.txt",
+                    "regex": "$sha256\\s+$basename"
+                }
+            }
+        }
+    }
+}
