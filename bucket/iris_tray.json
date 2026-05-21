@@ -23,10 +23,20 @@
   "pre_install": [
     "Stop-Process -Name 'IrisNotificationArea' -Force -ErrorAction SilentlyContinue"
   ],
+  "installer": {
+    "script": [
+      "Write-Host 'Registering MSIX Package with Windows...' -ForegroundColor Cyan",
+      "Add-AppxPackage -Path (Get-ChildItem \"$dir\\*.msix\").FullName"
+    ]
+  },
   "pre_uninstall": [
     "Stop-Process -Name 'IrisNotificationArea' -Force -ErrorAction SilentlyContinue"
   ],
-  "post_install": [
-    "Start-Process \"$dir\\IrisNotificationArea.exe\""
-  ]
+  "uninstaller": {
+    "script": [
+      "Write-Host 'Removing MSIX Package...' -ForegroundColor Cyan",
+      "$app = Get-AppxPackage -Name '*IrisNotificationArea*'",
+      "if ($app) { Remove-AppxPackage -Package $app.PackageFullName }"
+    ]
+  }
 }
