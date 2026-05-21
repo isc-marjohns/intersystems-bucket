@@ -13,13 +13,6 @@
             ]
     }
   },
-  "innosetup": true,
-  "shortcuts": [
-    [
-      "IrisNotificationArea.exe",
-      "IRIS Windows Tray"
-    ]
-  ],
   "pre_install": [
     "Stop-Process -Name 'IrisNotificationArea' -Force -ErrorAction SilentlyContinue"
   ],
