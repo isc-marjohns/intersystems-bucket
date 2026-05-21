@@ -16,7 +16,7 @@
   "innosetup": true,
   "shortcuts": [
     [
-      "PFiles64\\irisnotificationarea\\IrisNotificationArea.exe",
+      "IrisNotificationArea.exe",
       "IRIS Windows Tray"
     ]
   ],
@@ -27,6 +27,6 @@
     "Stop-Process -Name 'IrisNotificationArea' -Force -ErrorAction SilentlyContinue"
   ],
   "post_install": [
-    "Start-Process \"$dir\\PFiles64\\IrisNotificationArea\\IrisNotificationArea.exe\""
+    "Start-Process \"$dir\\IrisNotificationArea.exe\""
   ]
 }
