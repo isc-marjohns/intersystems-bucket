@@ -22,6 +22,11 @@
       "Add-AppxPackage -Path (Get-ChildItem \"$dir\\*.msix\").FullName"
     ]
   },
+  "post_install": [
+    "Write-Host 'Launching IRIS Windows Tray...' -ForegroundColor Cyan",
+    "$app = Get-AppxPackage -Name '*IrisNotificationArea*'",
+    "if ($app) { Start-Process \"shell:AppsFolder\\$($app.PackageFamilyName)!App\" }"
+  ],
   "pre_uninstall": [
     "Stop-Process -Name 'IrisNotificationArea' -Force -ErrorAction SilentlyContinue"
   ],
