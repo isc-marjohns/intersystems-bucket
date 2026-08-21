@@ -1,12 +1,12 @@
 {
-  "version": "1.0.5.0",
+  "version": "1.0.7.0",
   "description": "InterSystems Windows Tray",
   "homepage": "https://www.intersystems.com/",
   "license": "Proprietary",
   "architecture": {
     "64bit": {
-      "url": "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v1.0.5.0/IrisNotificationArea_1.0.5.0_x64.msix",
-      "hash": "sha256:F2A2E42453986EAC279C521BCA408427B97A8A56FFD2744349D498853AB5A394"
+      "url": "https://iris-windows-tray-bucket.s3.us-east-2.amazonaws.com/v1.0.7.0/IrisNotificationArea_1.0.7.0_x64.msix",
+      "hash": "sha256:6CE094857263668C16745321C216B8DFC0406B7248118DA1153607DA4321D403"
     }
   },
   "pre_install": [
